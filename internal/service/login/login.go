@@ -11,6 +11,7 @@ import (
 	"jct/common/config"
 	"jct/types"
 	"jct/utils"
+	"strings"
 	"time"
 )
 
@@ -49,6 +50,8 @@ func Login(nonce string, serialNumber string) (*types.LoginResp, error) {
 		return nil, err
 	}
 	prepare := message.String()
+	// LINUX BUG
+	prepare = strings.Replace(prepare, "\\nURI", "URI", 1)
 	//messageHash := crypto.Keccak256Hash([]byte(prepare))
 	//signature, err := crypto.Sign(messageHash.Bytes(), privateKey)
 	fmt.Println("---------msg----------")
