@@ -51,6 +51,8 @@ func Login(nonce string, serialNumber string) (*types.LoginResp, error) {
 	prepare := message.String()
 	//messageHash := crypto.Keccak256Hash([]byte(prepare))
 	//signature, err := crypto.Sign(messageHash.Bytes(), privateKey)
+	fmt.Println("---------msg----------")
+	fmt.Println(prepare)
 	signature, err := signMessage(prepare, privateKey)
 	if err != nil {
 		return nil, err
@@ -64,12 +66,14 @@ func Login(nonce string, serialNumber string) (*types.LoginResp, error) {
 	if err != nil {
 		return nil, err
 	}
+	fmt.Println("---------req----------")
 	fmt.Println(string(body))
 	resp, err := utils.PostWithTimeout(url, body, nil, 30*time.Second)
 	if err != nil {
 		return nil, err
 	}
 	var loginResp types.LoginResp
+	fmt.Println("---------resp----------")
 	fmt.Println(string(resp))
 	err = json.Unmarshal(resp, &loginResp)
 	if err != nil {
