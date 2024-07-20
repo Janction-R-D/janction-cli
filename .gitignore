@@ -1,0 +1,9 @@
+
+.idea/
+.DS_Store
+jct_node.log
+jct_node.pid
+macos
+arm
+yolov3_arm_cpu/
+yolov3_amd64_cpu/
