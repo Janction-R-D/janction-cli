@@ -1,14 +1,18 @@
 package config
 
 import (
+	"fmt"
 	"jct/utils/cache"
 	"jct/utils/cache/memcache"
+	"jct/utils/snowflake"
 	"time"
 )
 
 func InitConfig(conf *JanctionConf) {
 	initENV(conf)
-	InitMemCache()
+	initMemCache()
+	initUtils()
+
 }
 
 var (
@@ -33,6 +37,12 @@ func initENV(conf *JanctionConf) {
 	Path = conf.GetString("path", "./")
 }
 
-func InitMemCache() {
+func initUtils() {
+	if err := snowflake.Init("2024-07-01", 1); err != nil {
+		fmt.Println("Init snowflake failed, ", err)
+	}
+}
+
+func initMemCache() {
 	MemCache = memcache.New(5*time.Minute, 30*time.Minute)
 }

@@ -13,6 +13,7 @@ require (
 
 require (
 	github.com/btcsuite/btcd/btcec/v2 v2.3.2 // indirect
+	github.com/bwmarrin/snowflake v0.3.0 // indirect
 	github.com/dchest/uniuri v1.2.0 // indirect
 	github.com/decred/dcrd/dcrec/secp256k1/v4 v4.1.0 // indirect
 	github.com/holiman/uint256 v1.2.4 // indirect

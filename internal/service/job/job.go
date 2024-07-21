@@ -11,12 +11,8 @@ import (
 func RunAIJob(osType, compute, jobType string, jobId int64) {
 	if allowPlatform(osType, jobType) {
 		logrus.Println(fmt.Sprintf("[%s][JobID]:%d, [jobType]:%s Started...", compute, jobId, jobType))
-
-		// cmd exec
-		//macos.RunForMacOS("./yolov3_macos/darknet detect yolov3_macos/cfg/yolov3.cfg yolov3_macos/data/yolov3.weights yolov3_macos/data/person.jpg")
 		path := config.Path
 		runJob(fmt.Sprintf("cd %s && ./darknet detect cfg/yolov3.cfg data/yolov3.weights data/person.jpg", path), jobId)
-		//macos.RunForMacOS("../../../darknet/darknet detect darknet/cfg/yolov3.cfg ../../../darknet/data/yolov3.weights ../../../darknet/data/person.jpg")
 	} else {
 		if jobId == 0 {
 			logrus.Error("Node Busy...")

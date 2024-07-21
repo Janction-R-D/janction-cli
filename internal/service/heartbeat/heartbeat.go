@@ -18,6 +18,8 @@ func SendHeartbeat(info types.SystemInfo, execInfo types.ExecInfo) (*types.Heart
 		SystemInfoData: info,
 		ExecInfoData:   execInfo,
 	}
+	nodeId := reqData.SystemInfoData.BoardSerialNumber
+	fmt.Println(nodeId)
 	body, err := json.Marshal(reqData)
 	token, _ := config.MemCache.GetString(context.Background(), "token")
 	header := map[string]string{

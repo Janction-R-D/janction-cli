@@ -11,7 +11,9 @@ import (
 	"jct/internal/service/login"
 	"jct/internal/service/system_info"
 	"jct/types"
+	"jct/utils/snowflake"
 	"os"
+	"strings"
 	"time"
 )
 
@@ -19,16 +21,17 @@ type JanctionService struct{}
 
 func (j *JanctionService) InitLogin() error {
 	nonce, err := login.FetchNonce()
+	if nonce == nil {
+		return errors.New("failed to fetch nonce")
+	}
 	nonceStr := nonce.Data.Nonce
 	if err != nil {
 		return err
 	}
 	fmt.Println("[nonce] ", nonceStr)
-
 	osType := config.OsType
 	architecture := config.Architecture
 	sysInfo := j.getSystemInfo(osType, architecture)
-
 	loginResp, err := login.Login(nonceStr, sysInfo.BoardSerialNumber)
 	if err != nil {
 		return err
@@ -61,11 +64,27 @@ func (j *JanctionService) getSystemInfo(osType, architecture string) types.Syste
 	systemInfo = system_info.GetLinuxInfo()
 	systemInfo.OSType = osType
 	systemInfo.Architecture = architecture
+	_, err := os.Stat(".id") //os.Stat获取文件信息
+	if os.IsNotExist(err) {
+		f, err := os.Create(".id")
+		defer f.Close()
+		if err != nil {
+			logrus.Error(err)
+		} else {
+			_, err = f.Write((snowflake.GenID()))
+			if err != nil {
+				logrus.Error(err)
+			}
+		}
+	}
+
 	uuid, err := os.ReadFile(".id")
+
 	if err != nil {
 		logrus.Error(err)
 	}
-	systemInfo.BoardSerialNumber = string(uuid)
+	nodeId := strings.Replace(string(uuid), "\n", "", -1)
+	systemInfo.BoardSerialNumber = nodeId
 	return systemInfo
 }
 

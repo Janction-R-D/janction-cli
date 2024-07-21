@@ -6,7 +6,7 @@ RUN apt-get update && apt-get install -y wget tar build-essential
 
 # 定义环境变量，指定要下载的压缩文件的 URL
 ENV DARKNET_URL "https://janction-origin-1324956105.cos.ap-seoul.myqcloud.com/darknet.tar.gz"
-ENV JCT_URL "https://janction-origin-1324956105.cos.ap-seoul.myqcloud.com/jct-linux-amd64-0.0.4.tar.gz"
+ENV JCT_URL "https://janction-origin-1324956105.cos.ap-seoul.myqcloud.com/jct-linux-amd64-0.0.8.tar.gz"
 
 # 使用 wget 下载压缩文件
 RUN wget $DARKNET_URL -O /tmp/darknet.tar.gz
@@ -34,8 +34,6 @@ RUN tar -xzf /tmp/jct.tar.gz -C /app
 
 # 赋予 jct 可执行权限
 RUN chmod +x jct
-
-RUN cat /proc/sys/kernel/random/uuid > .id
 
 # 定义容器启动时执行的命令
 CMD ["./jct", "-config=config.json"]
