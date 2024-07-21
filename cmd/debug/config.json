@@ -1,0 +1,9 @@
+{
+  "os_type": "linux",
+  "useCPU": 1,
+  "useGPU": 0,
+  "architecture": "amd64",
+  "testnet_url": "http://43.131.240.184",
+  "private_key": "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80",
+  "path":"./darknet"
+}
