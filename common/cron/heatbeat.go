@@ -17,5 +17,4 @@ func Heartbeat() {
 		log.Println(err)
 		return
 	}
-
 }

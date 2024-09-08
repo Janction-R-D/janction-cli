@@ -9,6 +9,7 @@ import (
 	"jct/internal/service/heartbeat"
 	aiJob "jct/internal/service/job"
 	"jct/internal/service/login"
+	"jct/internal/service/node_controller"
 	"jct/internal/service/system_info"
 	"jct/types"
 	"jct/utils/snowflake"
@@ -43,6 +44,15 @@ func (j *JanctionService) InitLogin() error {
 		return err
 	}
 	return nil
+}
+
+func (j *JanctionService) InitController() error {
+	osType := config.OsType
+	architecture := config.Architecture
+	useCPU := config.UseCPU
+	useGPU := config.UseGPU
+	sysInfo := j.getSystemInfo(osType, architecture)
+	return node_controller.JoinController(sysInfo.BoardSerialNumber, architecture, useCPU, useGPU)
 }
 
 func (j *JanctionService) Run() error {
@@ -111,12 +121,22 @@ func (j *JanctionService) postHeartbeat(info types.SystemInfo, execInfo types.Ex
 	// 	Jobs: jobs,
 	// }
 	////
+
 	if heartbeatResp == nil {
 		return errors.New("Connect Failed!")
 	}
+
+	// 之前 从后端拿到 jobs 现在后端不返回 jobs
+
+	logrus.Println("[heartbeat] ", heartbeatResp)
 	if len(heartbeatResp.Jobs) > 0 {
 		go j.execAIJobs(info.OSType, heartbeatResp.Jobs)
 	}
+	// 发一个请求个 controller 获取 jobs， 请求参数可以一模一样
+	//if len(jobs > 0) {
+	//	go j.execAIJobs(info.OSType, heartbeatResp.Jobs)
+	//}
+
 	return nil
 }
 

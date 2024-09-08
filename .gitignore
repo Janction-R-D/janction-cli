@@ -7,3 +7,5 @@ macos
 arm
 yolov3_arm_cpu/
 yolov3_amd64_cpu/
+.id
+vscode/

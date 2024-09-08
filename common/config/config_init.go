@@ -16,13 +16,14 @@ func InitConfig(conf *JanctionConf) {
 }
 
 var (
-	OsType       string
-	TestnetUrl   string
-	Architecture string
-	UseGPU       int
-	UseCPU       int
-	PrivateKey   string
-	Path         string
+	OsType        string
+	TestnetUrl    string
+	ControllerUrl string
+	Architecture  string
+	UseGPU        int
+	UseCPU        int
+	//PrivateKey   string
+	Path string
 )
 
 var MemCache cache.Cache
@@ -30,10 +31,11 @@ var MemCache cache.Cache
 func initENV(conf *JanctionConf) {
 	OsType = conf.GetString("os_type", "")
 	TestnetUrl = conf.GetString("testnet_url", "")
+	ControllerUrl = conf.GetString("controller_url", "")
 	Architecture = conf.GetString("architecture", "")
 	UseCPU = conf.GetInt("useCPU", 1)
 	UseGPU = conf.GetInt("UseGPU", 0)
-	PrivateKey = conf.GetString("private_key", "")
+	//PrivateKey = conf.GetString("private_key", "")
 	Path = conf.GetString("path", "./")
 }
 

@@ -20,7 +20,7 @@ func JanctionCron() *janctionCron {
 
 func (c *janctionCron) start() error {
 	var err error
-	_, err = c.scheduler.Tag(TagHeartbeat).Every(55).Seconds().Do(Heartbeat)
+	_, err = c.scheduler.Tag(TagHeartbeat).Every(5).Seconds().Do(Heartbeat)
 	if err != nil {
 		return errors.Wrapf(err, "Scheduler init err, tag: %s", TagHeartbeat)
 	}

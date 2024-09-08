@@ -28,6 +28,11 @@ func main() {
 	if err != nil {
 		fmt.Println("[Init Error]", err)
 	}
+	// 注册节点
+	err = janction.InitController()
+	if err != nil {
+		fmt.Println("[Join Controller Error]", err)
+	}
 
 	err = cron.Run()
 	if err != nil {

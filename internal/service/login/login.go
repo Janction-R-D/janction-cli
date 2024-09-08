@@ -11,6 +11,7 @@ import (
 	"jct/common/config"
 	"jct/types"
 	"jct/utils"
+	"os"
 	"time"
 )
 
@@ -32,7 +33,8 @@ func FetchNonce() (*types.NonceRes, error) {
 func Login(nonce string, serialNumber string) (*types.LoginResp, error) {
 	fmt.Println("[serialNumber] ", serialNumber)
 	url := config.TestnetUrl + "/api/v1/auth/login"
-	privateKey, err := crypto.HexToECDSA(config.PrivateKey[2:])
+	privateKeyStr := os.Getenv("PRIVATE_KEY")
+	privateKey, err := crypto.HexToECDSA(privateKeyStr[2:])
 	if err != nil {
 		return nil, err
 	}
