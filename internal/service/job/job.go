@@ -2,27 +2,44 @@ package job
 
 import (
 	"fmt"
-	"jct/common/config"
-	"jct/types"
-
-	"github.com/sirupsen/logrus"
 )
 
-func RunAIJob(osType, compute, jobType string, jobId int64) {
-	if allowPlatform(osType, jobType) {
-		logrus.Println(fmt.Sprintf("[%s][JobID]:%d, [jobType]:%s Started...", compute, jobId, jobType))
-		path := config.Path
-		runJob(fmt.Sprintf("cd %s && ./darknet detect cfg/yolov3.cfg data/yolov3.weights data/person.jpg", path), jobId)
-	} else {
-		if jobId == 0 {
-			logrus.Error("Node Busy...")
-		} else {
-			logrus.Error("Unsupported job-type")
-			SubmitJobStatus(jobId, types.JobFailed)
-		}
-
-	}
+func RunAIJob() {
+	runJob(fmt.Sprintf("python3 %s/task.py", "/app"))
 }
+
+//func RunAIJob(osType, compute, jobType string, jobId int64) {
+//	if allowPlatform(osType, jobType) {
+//		logrus.Println(fmt.Sprintf("[%s][JobID]:%d, [jobType]:%s Started...", compute, jobId, jobType))
+//		path := config.Path
+//		fmt.Println("file path:", path)
+//		runJob(fmt.Sprintf("python3 task.py", path), jobId)
+//	} else {
+//		if jobId == 0 {
+//			logrus.Error("Node Busy...")
+//		} else {
+//			logrus.Error("Unsupported job-type")
+//			SubmitJobStatus(jobId, types.JobFailed)
+//		}
+//
+//	}
+//}
+
+//func RunAIJob(osType, compute, jobType string, jobId int64) {
+//	if allowPlatform(osType, jobType) {
+//		logrus.Println(fmt.Sprintf("[%s][JobID]:%d, [jobType]:%s Started...", compute, jobId, jobType))
+//		path := config.Path
+//		runJob(fmt.Sprintf("cd %s && ./darknet detect cfg/yolov3.cfg data/yolov3.weights data/person.jpg", path), jobId)
+//	} else {
+//		if jobId == 0 {
+//			logrus.Error("Node Busy...")
+//		} else {
+//			logrus.Error("Unsupported job-type")
+//			SubmitJobStatus(jobId, types.JobFailed)
+//		}
+//
+//	}
+//}
 
 func allowPlatform(osType, jobType string) bool {
 	// TODO jobType from config

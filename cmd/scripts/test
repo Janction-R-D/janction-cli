@@ -1,0 +1,16 @@
+JCT_TASK=gpu_simple_linear_regression
+JCT_GPU=RTX 4070
+JCT_GPU_ID=878-324-3423
+
+
+
+
+nvidia-smi -L | head -n 1
+GPU 0: Tesla T4 (UUID: GPU-75cc9488-b2d0-6342-3d34-2dd02f9e3c14)
+GPU
+nvidia-smi -L | head -n 1 |awk -F':' '{print $2}'| awk -F'(' '{print $1}'
+UUID
+nvidia-smi -L | head -n 1 | grep -o '\GPU-[0-9a-f-]*'
+
+CPU 型号
+lscpu | grep "Model name" | awk -F':' '{print $2}'

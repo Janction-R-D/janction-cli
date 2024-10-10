@@ -8,6 +8,7 @@ import (
 	"jct/common/cron"
 	"jct/internal/service"
 	"os"
+	"time"
 )
 
 var janction service.JanctionService
@@ -21,26 +22,26 @@ func main() {
 	fmt.Println("[Use CPU]\t", config.UseGPU)
 	fmt.Println("[Use GPU]\t", config.UseCPU)
 	fmt.Println("[Private Key]\t", os.Getenv("PRIVATE_KEY"))
+	fmt.Println("[Task]\t", os.Getenv("JCT_TASK"))
+	fmt.Println("[GPU]\t", os.Getenv("JCT_GPU"))
+	fmt.Println("[GPU ID]\t", os.Getenv("JCT_GPU_ID"))
+
 	err := janction.InitLogin()
 	if err != nil {
 		fmt.Println("[Init Error]", err)
 	}
-	// 注册节点
-	//err = janction.InitController()
-	//if err != nil {
-	//	fmt.Println("[Join Controller Error]", err)
-	//}
 	err = cron.Run()
 	if err != nil {
 		logrus.Fatal(err)
 	}
 	for {
+		janction.ExecTask()
+		time.Sleep(time.Second * 3)
 	}
 }
 
 func init() {
 	janction = service.JanctionService{}
-
 }
 
 func ParseCommandArgs() *config.JanctionConf {

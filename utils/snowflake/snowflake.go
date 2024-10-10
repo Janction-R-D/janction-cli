@@ -21,3 +21,7 @@ func Init(startTime string, machineID int64) (err error) {
 func GenID() []byte {
 	return []byte(node.Generate().Base58())
 }
+
+func GenIntID() int64 {
+	return node.Generate().Int64()
+}

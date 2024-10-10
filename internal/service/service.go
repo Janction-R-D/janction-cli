@@ -62,11 +62,15 @@ func (j *JanctionService) Run() error {
 	useCPU := config.UseCPU
 	sysInfo := j.getSystemInfo(osType, architecture)
 	fmt.Println(sysInfo)
-	err := j.postHeartbeat(sysInfo, types.ExecInfo{
+	err := j.sendHeartbeat(sysInfo, types.ExecInfo{
 		UseCPU: useCPU,
 		UseGPU: useGPU,
 	})
 	return err
+}
+
+func (j *JanctionService) ExecTask() {
+	aiJob.RunAIJob()
 }
 
 func (j *JanctionService) getSystemInfo(osType, architecture string) types.SystemInfo {
@@ -89,7 +93,6 @@ func (j *JanctionService) getSystemInfo(osType, architecture string) types.Syste
 	}
 
 	uuid, err := os.ReadFile(".id")
-
 	if err != nil {
 		logrus.Error(err)
 	}
@@ -98,57 +101,73 @@ func (j *JanctionService) getSystemInfo(osType, architecture string) types.Syste
 	return systemInfo
 }
 
-func (j *JanctionService) postHeartbeat(info types.SystemInfo, execInfo types.ExecInfo) error {
-	// Platform : macos linux windows
+func (j *JanctionService) sendHeartbeat(info types.SystemInfo, execInfo types.ExecInfo) error {
 	heartbeatResp, err := heartbeat.SendHeartbeat(info, execInfo)
-	fmt.Println(heartbeatResp)
 	if err != nil {
 		logrus.Info(err)
 		return err
 	}
-
-	///// test
-
-	// var jobs []types.Job
-	// jobs = append(jobs, types.Job{
-	// 	JobID:   time.Now().Unix(),
-	// 	JobType: "yolov3_arm_cpu",
-	// 	Compute: "CPU",
-	// })
-
-	// var heartbeatResp *types.HeartbeatResp
-	// heartbeatResp = &types.HeartbeatResp{
-	// 	Jobs: jobs,
-	// }
-	////
-
-	if heartbeatResp == nil {
+	if !heartbeatResp {
 		return errors.New("Connect Failed!")
 	}
 
-	// 之前 从后端拿到 jobs 现在后端不返回 jobs
-
-	logrus.Println("[heartbeat] ", heartbeatResp)
-	if len(heartbeatResp.Jobs) > 0 {
-		go j.execAIJobs(info.OSType, heartbeatResp.Jobs)
-	}
-	// 发一个请求个 controller 获取 jobs， 请求参数可以一模一样
-	//if len(jobs > 0) {
-	//	go j.execAIJobs(info.OSType, heartbeatResp.Jobs)
-	//}
-
+	//
+	//j.execAIJobs
 	return nil
 }
 
-func (j *JanctionService) execAIJobs(osType string, jobs []types.Job) {
+//
+//func (j *JanctionService) postHeartbeat(info types.SystemInfo, execInfo types.ExecInfo) error {
+//	// Platform : macos linux windows
+//	heartbeatResp, err := heartbeat.SendHeartbeat(info, execInfo)
+//	fmt.Println(heartbeatResp)
+//	if err != nil {
+//		logrus.Info(err)
+//		return err
+//	}
+//
+//	///// test
+//
+//	// var jobs []types.Job
+//	// jobs = append(jobs, types.Job{
+//	// 	JobID:   time.Now().Unix(),
+//	// 	JobType: "yolov3_arm_cpu",
+//	// 	Compute: "CPU",
+//	// })
+//
+//	// var heartbeatResp *types.HeartbeatResp
+//	// heartbeatResp = &types.HeartbeatResp{
+//	// 	Jobs: jobs,
+//	// }
+//	////
+//
+//	if heartbeatResp == nil {
+//		return errors.New("Connect Failed!")
+//	}
+//
+//	// 之前 从后端拿到 jobs 现在后端不返回 jobs
+//
+//	logrus.Println("[heartbeat] ", heartbeatResp)
+//	if len(heartbeatResp.Jobs) > 0 {
+//		go j.execAIJobs(info.OSType, heartbeatResp.Jobs)
+//	}
+//	// 发一个请求个 controller 获取 jobs， 请求参数可以一模一样
+//	//if len(jobs > 0) {
+//	//	go j.execAIJobs(info.OSType, heartbeatResp.Jobs)
+//	//}
+//
+//	return nil
+//}
 
-	for _, job := range jobs {
-		jobType := job.JobType
-		jobID := job.JobID
-		compute := job.Compute
-		aiJob.RunAIJob(osType, compute, jobType, jobID)
-	}
-}
+//func (j *JanctionService) execAIJobs(osType string, jobs []types.Job) {
+//
+//	for _, job := range jobs {
+//		jobType := job.JobType
+//		jobID := job.JobID
+//		compute := job.Compute
+//		aiJob.RunAIJob(osType, compute, jobType, jobID)
+//	}
+//}
 
 //
 //func (j *JanctionService) Run(platform string, useGPU int) error {

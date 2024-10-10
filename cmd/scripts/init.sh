@@ -1,29 +1,17 @@
 #!/bin/bash
 
 # 发送 GET 请求并获取响应
-response=$(curl -s "http://localhost:8767/api/v1/task/list?task_type=cpu")
+#response=$(curl -s "http://localhost:8767/api/v1/task/list?task_type=cpu")
+response=$(curl -s "https://www.janction.io/api/v1/task/list?task_type=gpu")
 
-
-# 解析 JSON 数据
-code=$(echo "$response" | jq '.code')
-msg=$(echo "$response" | jq '.msg')
-data=$(echo "$response" | jq '.data')
-
-echo "$msg"
-echo "$data"
-
-if [ "$code" == "1000" ] ; then
-  echo "123"
-fi
-
-# 检查响应代码和消息
-if [ "$code" == "1000" ]; then
-    # 将任务名称提取到数组中
-    mapfile -t tasks <<< "$data"
+# 检查响应代码是否为1000
+if [ $(echo "$response" | jq '.code') == "1000" ]; then
+    # 从 JSON 响应中提取 task_name 到数组
+    mapfile -t task_names < <(echo "$response" | jq -r '.data[].task_name')
 
     # 显示任务列表并让用户选择
     echo "Available tasks:"
-    select task in "${tasks[@]}"; do
+    select task in "${task_names[@]}"; do
         if [ -n "$task" ]; then
             # 用户选择后，输出选择的任务
             echo "You chose $task"
@@ -33,5 +21,7 @@ if [ "$code" == "1000" ]; then
         fi
     done
 else
+    # 如果响应代码不是1000，输出错误信息
+    msg=$(echo "$response" | jq '.msg')
     echo "Failed to fetch tasks: $msg"
 fi
