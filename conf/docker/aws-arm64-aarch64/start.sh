@@ -101,7 +101,7 @@ if [ $(echo "$response" | jq '.code') == "1000" ]; then
         fi
     done
 
-    if docker run -d -e JCT_CPU="$JCT_CPU" -e JCT_GPU="$JCT_GPU" -e JCT_GPU_ID="$JCT_GPU_ID" -e JCT_TASK="$task" -e JCT_TASK_TYPE=$JCT_TASK_TYPE -e JCT_USE_DEVICE=$JCT_USE_DEVICE -e PRIVATE_KEY=$PRIVATE_KEY  --name janction-node roddyneo/janction-node-arm64:0.2.0; then
+    if docker run -d -e JCT_CPU="$JCT_CPU" -e JCT_GPU="$JCT_GPU" -e JCT_GPU_ID="$JCT_GPU_ID" -e JCT_TASK="$task" -e JCT_TASK_TYPE=$JCT_TASK_TYPE -e JCT_USE_DEVICE=$JCT_USE_DEVICE -e PRIVATE_KEY=$PRIVATE_KEY  --name janction-node roddyneo/janction-node-arm64-v8:0.2.0; then
         echo "Janction node started successfully."
     else
         echo "Failed to start Janction node."
