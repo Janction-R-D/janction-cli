@@ -21,12 +21,12 @@ start .sh 修改
 
 最终
 
-docker build --platform linux/arm64 -t janction-node-arm64-v8-v8-v8:0.2.0 .
+docker build --platform linux/arm64 -t janction-node-arm64-v8:0.2.0 .
 
 
-docker tag 1cc33dfb8354fc7e52bd80e62b85b043f226649ae109f867d43d2608b53fe583 roddyneo/janction-node-arm64-v8-v8:0.2.0
+docker tag 1cc33dfb8354fc7e52bd80e62b85b043f226649ae109f867d43d2608b53fe583 roddyneo/janction-node-arm64-v8:0.2.0
 
-docker push roddyneo/janction-node-arm64-v8-v8:0.2.0
+docker push roddyneo/janction-node-arm64-v8:0.2.0
 
-docker pull roddyneo/janction-node-arm64-v8-v8:0.2.0
+docker pull roddyneo/janction-node-arm64-v8:0.2.0
 
