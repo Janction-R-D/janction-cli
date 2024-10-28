@@ -2,5 +2,5 @@
   "os_type": "linux",
   "architecture": "arm",
   "testnet_url": "https://www.janction.io",
-  "path": "/workspace"
+  "path": "/home/ubuntu"
 }

@@ -21,12 +21,21 @@ start .sh 修改
 
 最终
 
-docker build --platform linux/arm64 -t janction-node-arm64-v8:0.2.0 .
+docker build --platform linux/arm64/v8 -t janction-node-arm64-v8:0.2.0 .
 
 
-docker tag 1cc33dfb8354fc7e52bd80e62b85b043f226649ae109f867d43d2608b53fe583 roddyneo/janction-node-arm64-v8:0.2.0
+docker tag 7445432fbc48 roddyneo/janction-node-arm64-v8:0.2.0
 
 docker push roddyneo/janction-node-arm64-v8:0.2.0
 
 docker pull roddyneo/janction-node-arm64-v8:0.2.0
 
+
+
+
+
+docker run --rm -it -e JCT_CPU="Neoverse-V1 AWS Graviton3 AWS Graviton3 CPU @ 2.6GHz" -e JCT_GPU=none -e JCT_GPU_ID=none -e JCT_TASK=cpu_simple_linear_regression -e JCT_TASK_TYPE=cpu -e JCT_USE_DEVICE=cpu -e PRIVATE_KEY=0x4a6345abcdef17e36ba4a6b4d238ff944bacb478cbed5efca12bbc64a6a9cbb3  roddyneo/janction-node-arm64-v8:0.2.0
+
+
+sh链接：
+https://ap-northeast-1.console.aws.amazon.com/s3/object/janction-datas?region=ap-northeast-1&bucketType=general&prefix=linux-arm64-v8/start.sh
