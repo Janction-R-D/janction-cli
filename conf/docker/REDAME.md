@@ -25,3 +25,5 @@ CGO_ENABLE=0 GOOS=linux GOARCH=amd64 go build -ldflags='-s -w -extldflags "-stat
 docker run -d --name jct1 roddyneo/jct:latest -e PRIVATE_KEY=0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
 
 https://hub.docker.com/repositories/roddyneo
+
+

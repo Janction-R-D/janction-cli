@@ -40,13 +40,20 @@ import (
 func runJob(cmdStr string) {
 	command := cmdStr
 	jobId := snowflake.GenIntID()
+	fmt.Println("command: ", command)
 	SubmitJobStatus(jobId, types.JobRunning)
 	ok, outString, errString := run(jobId, command, 10*60*1000)
+	fmt.Println("debug ok: ", ok)
+	fmt.Println("debug std: ", outString)
+	fmt.Println("debug err: ", errString)
+	fmt.Println("debug over...")
 	// check success or fail
 	if ok {
-		log.Printf("[Failed][Error][JobID:%d]: [%s][%s] ", jobId, outString, errString)
+		if outString == "success\n" {
+			fmt.Println("[Success] Compute Success")
+		}
+		log.Printf("[Success][JobID:%d]: [%s][%s] ", jobId, outString, errString)
 		SubmitJobStatus(jobId, types.JobFinished)
-
 	}
 }
 
@@ -73,7 +80,10 @@ func runJob(cmdStr string) {
 
 func run(jobId int64, command string, killInMilliSeconds time.Duration) (okResult bool, stdout, stderr string) {
 	var cmd *exec.Cmd
-	cmd = exec.Command("sh", "-c", command)
+	//cmd = exec.Command("sh", "-c", command)
+
+	cmd = exec.Command("python3", command)
+
 	var buf1 bytes.Buffer
 	r1, w1, _ := os.Pipe()
 	cmd.Stdout = w1
@@ -99,7 +109,7 @@ func run(jobId int64, command string, killInMilliSeconds time.Duration) (okResul
 		log.Println("process killed")
 	case err := <-done:
 		if err != nil {
-			log.Printf("process done with error = %v", err)
+			log.Printf("[Failed][Error][JobID:%d]: [%v] ", jobId, err)
 			okResult = false
 		}
 	}
@@ -107,7 +117,9 @@ func run(jobId int64, command string, killInMilliSeconds time.Duration) (okResul
 		log.Fatal(err)
 		okResult = false
 	}
-	return true, buf1.String(), buf2.String()
+	stdout = buf1.String()
+	stderr = buf2.String()
+	return okResult, stdout, stderr
 }
 
 func SubmitJobStatus(jobId int64, jobStatus types.JobStatus) {

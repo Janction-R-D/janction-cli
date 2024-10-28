@@ -1,0 +1,9 @@
+
+
+export JCT_CPU=Cortex-A55
+export JCT_GPU=none
+export JCT_GPU_ID=none
+export JCT_TASK=cpu_simple_linear_regression
+export JCT_TASK_TYPE=cpu
+export JCT_USE_DEVICE=cpu
+export PRIVATE_KEY=0x4a6345abcdef17e36ba4a6b4d238ff944bacb478cbed5efca12bbc64a6a9cbb3

@@ -7,7 +7,6 @@ import (
 	"jct/common/config"
 	"jct/types"
 	"jct/utils"
-	"log"
 	"time"
 )
 
@@ -48,15 +47,13 @@ func SendHeartbeat(info types.SystemInfo, execInfo types.ExecInfo) (bool, error)
 			GPUUuid: config.JCT_GPU_ID,
 		},
 	}
-	nodeId := reqData.SystemInfoData.BoardSerialNumber
-	fmt.Println(nodeId)
+	//nodeId := reqData.SystemInfoData.BoardSerialNumber
 	body, err := json.Marshal(reqData)
 	token, _ := config.MemCache.GetString(context.Background(), "token")
 	header := map[string]string{
 		"Authorization": fmt.Sprintf("Bearer %s", token),
 	}
-	resp, err := utils.PostWithTimeout(url, body, header, 30*time.Second)
-	log.Println(string(resp))
+	_, err = utils.PostWithTimeout(url, body, header, 30*time.Second)
 	if err != nil {
 		return false, err
 	}

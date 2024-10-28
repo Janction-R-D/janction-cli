@@ -7,24 +7,23 @@ import (
 	"jct/common/config"
 	"jct/common/cron"
 	"jct/internal/service"
-	"os"
 	"time"
 )
 
 var janction service.JanctionService
 
 func main() {
-	fmt.Println("[Janction Node]\t", "version v0.0.2")
+	fmt.Println("[Janction Node]\t", "version v0.0.3")
 	ParseCommandArgs()
 	fmt.Println("[Os Type]\t", config.OsType)
 	fmt.Println("[TestnetUrl]\t", config.TestnetUrl)
 	fmt.Println("[Architecture]\t", config.Architecture)
 	fmt.Println("[Use CPU]\t", config.UseGPU)
 	fmt.Println("[Use GPU]\t", config.UseCPU)
-	fmt.Println("[Private Key]\t", os.Getenv("PRIVATE_KEY"))
-	fmt.Println("[Task]\t", os.Getenv("JCT_TASK"))
-	fmt.Println("[GPU]\t", os.Getenv("JCT_GPU"))
-	fmt.Println("[GPU ID]\t", os.Getenv("JCT_GPU_ID"))
+	fmt.Println("[Task]\t\t", config.Task)
+	fmt.Println("[CPU]\t\t", config.JCT_CPU)
+	fmt.Println("[GPU]\t\t", config.JCT_GPU)
+	fmt.Println("[GPU ID]\t", config.JCT_GPU_ID)
 
 	err := janction.InitLogin()
 	if err != nil {
@@ -36,7 +35,7 @@ func main() {
 	}
 	for {
 		janction.ExecTask()
-		time.Sleep(time.Second * 3)
+		time.Sleep(time.Second * 5)
 	}
 }
 

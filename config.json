@@ -1,10 +1,6 @@
 {
-  "os_type": "macos",
-  "useCPU": 1,
-  "useGPU": 0,
+  "os_type": "linux",
   "architecture": "arm",
-  "testnet_url": "https://4961-101-71-39-177.ngrok-free.app",
-  "controller_url": "http://127.0.0.1:7767",
-  "private_key": "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80",
+  "testnet_url": "https://www.janction.io",
   "path":"./"
 }

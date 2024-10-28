@@ -2,10 +2,17 @@ package job
 
 import (
 	"fmt"
+	"jct/common/config"
 )
 
 func RunAIJob() {
-	runJob(fmt.Sprintf("python3 %s/task.py", "/app"))
+	taskFileName := config.Task + ".py"
+	path := config.Path
+	runJob(fmt.Sprintf("%s/%s", path, taskFileName))
+
+	// DEBUG
+	//runJob(fmt.Sprintf("%s/%s", "/Users/dick/Documents/jac/jct/cmd/scripts", taskFileName))
+
 }
 
 //func RunAIJob(osType, compute, jobType string, jobId int64) {

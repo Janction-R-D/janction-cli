@@ -1,0 +1,1 @@
+docker run -d -e JCT_CPU=m2 -e JCT_GPU=none -e JCT_GPU_ID=none -e JCT_TASK=cpu_simple_linear_regression -e JCT_TASK_TYPE=cpu -e JCT_USE_DEVICE=cpu -e PRIVATE_KEY=0xaaaaa  --name test010101 test01

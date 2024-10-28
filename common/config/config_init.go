@@ -1,7 +1,9 @@
 package config
 
 import (
+	"crypto/ecdsa"
 	"fmt"
+	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/sirupsen/logrus"
 	"jct/utils/cache"
 	"jct/utils/cache/memcache"
@@ -16,7 +18,6 @@ func InitConfig(conf *JanctionConf) {
 	initMemCache()
 	initUtils()
 	initNodeId()
-
 }
 
 var (
@@ -33,6 +34,7 @@ var (
 	Task          string
 	TaskType      string
 	NodeID        string
+	PrivateKey    *ecdsa.PrivateKey
 )
 
 var MemCache cache.Cache
@@ -42,20 +44,28 @@ func initENV(conf *JanctionConf) {
 	TestnetUrl = conf.GetString("testnet_url", "")
 	ControllerUrl = conf.GetString("controller_url", "")
 	Architecture = conf.GetString("architecture", "")
-	UseCPU = 1
-	UseGPU = 0
-	useDevice := os.Getenv("JCT_USE_DEVICE")
+	useDevice := strings.TrimSpace(os.Getenv("JCT_USE_DEVICE"))
 	if useDevice == "gpu" {
 		UseCPU = 0
 		UseGPU = 1
+	} else {
+		UseCPU = 1
+		UseGPU = 0
 	}
-	JCT_CPU = os.Getenv("JCT_CPU")
-	Task = os.Getenv("JCT_TASK")
-	TaskType = os.Getenv("JCT_TASK_TYPE")
+
+	privateKeyStr := strings.TrimSpace(os.Getenv("PRIVATE_KEY"))
+	privateKey, err := crypto.HexToECDSA(privateKeyStr[2:])
+	if err != nil {
+		panic(err)
+	}
+	PrivateKey = privateKey
+	JCT_CPU = strings.TrimSpace(os.Getenv("JCT_CPU"))
+	Task = strings.TrimSpace(os.Getenv("JCT_TASK"))
+	TaskType = strings.TrimSpace(os.Getenv("JCT_TASK_TYPE"))
 
 	Path = conf.GetString("path", "./")
-	JCT_GPU = os.Getenv("JCT_GPU")
-	JCT_GPU_ID = os.Getenv("JCT_GPU_ID")
+	JCT_GPU = strings.TrimSpace(os.Getenv("JCT_GPU"))
+	JCT_GPU_ID = strings.TrimSpace(os.Getenv("JCT_GPU_ID"))
 }
 
 func initUtils() {

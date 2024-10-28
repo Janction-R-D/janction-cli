@@ -61,7 +61,6 @@ func (j *JanctionService) Run() error {
 	useGPU := config.UseGPU
 	useCPU := config.UseCPU
 	sysInfo := j.getSystemInfo(osType, architecture)
-	fmt.Println(sysInfo)
 	err := j.sendHeartbeat(sysInfo, types.ExecInfo{
 		UseCPU: useCPU,
 		UseGPU: useGPU,

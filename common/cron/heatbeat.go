@@ -13,6 +13,7 @@ func init() {
 
 func Heartbeat() {
 	err := janction.Run()
+	log.Printf("Ping Janction Service Success...")
 	if err != nil {
 		log.Println(err)
 		return
